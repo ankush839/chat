@@ -13,15 +13,20 @@ dotenv.config({});
 const PORT = process.env.PORT || 5000;
 
 // middleware
-app.use(express.urlencoded({extended:true}));
-app.use(express.json()); 
-app.use(cookieParser());
-const corsOption={
-    origin:'https://chat-6-obw5.onrender.com',
-    credentials:true
+const corsOptions = {
+  origin: "https://chat-6-obw5.onrender.com",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
-app.use(cors(corsOption)); 
 
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // 🔥 IMPORTANT
+
+/* ================= MIDDLEWARE ================= */
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // routes
 app.use("/api/v1/user",userRoute); 
